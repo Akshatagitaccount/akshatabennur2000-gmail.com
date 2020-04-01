@@ -1,0 +1,19 @@
+import requests
+import csv
+from bs4 import BeautifulSoup
+import time
+with open('prices.csv','w') as prices:
+    prices.write("Date,Price\n")
+for m in range(4,12):
+    for d in range(13,29):
+        try:
+            response=request.get('https://www.paihotels.com/the-president-hotel-hubli/rooms/comfort-room.html'+str(m)+'&day='+str(d)+'&year=2015')
+            if response.ok:
+    soup=BeautifulSoup(response.text)
+        except Exception e:
+            print e
+            time.sleep(.3)
+        king=soup.find("table", {"summary":"rooms availiability"}).find("div","room")
+        if king.find("div","comfort-room").text.strip()=="King":
+            price=king.find("div","roomAvail").find("div","value").strip() 
+            prices.write("2020"+str(m)+"-"+str(d)+","+str(price)+"\n")
